@@ -3,7 +3,8 @@ const connection = require('../connection');
 const router = express.Router();
 
 const jwt = require('jsonwebtoken');
-require('dotenv').config()
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 router.post('/signup', (req, res) => {
     let user = req.body;
@@ -50,5 +51,6 @@ router.post('/login', (req, res) => {
         }
     })
 })
+
 
 module.exports = router
