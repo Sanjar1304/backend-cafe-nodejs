@@ -60,7 +60,7 @@ var transporter = nodemailer.createTransport({
     }
 })
 
-router.post('/forgotpassword', (req, res) => {
+router.post('/forgotPassword', (req, res) => {
     const user = req.body;
     query = 'select email,password from user where email=?';
     connection.query(query, [user.email], (err, results) => {
