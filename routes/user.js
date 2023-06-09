@@ -6,6 +6,17 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+})
+
+
+// signup API
 router.post('/signup', (req, res) => {
     let user = req.body;
     query = 'select email,password,role,status from user where email=?'
@@ -29,7 +40,7 @@ router.post('/signup', (req, res) => {
     });
 })
 
-
+// login API
 router.post('/login', (req, res) => {
     const user = req.body;
     query = 'select email,password,role,status from user where email=?';
@@ -52,14 +63,8 @@ router.post('/login', (req, res) => {
     })
 })
 
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
-    }
-})
 
+// forgot password API
 router.post('/forgotPassword', (req, res) => {
     const user = req.body;
     query = 'select email,password from user where email=?';
@@ -97,5 +102,15 @@ router.post('/forgotPassword', (req, res) => {
         }
     })
 })
+
+// get API
+router.get('/get', (req, res) => {
+    const user = req.body;
+    var query = "select id,name,email,contacNumber,status from user where role='user'";
+    connection.query(query, [user.email], (err, results) => {
+
+    })
+})
+
 
 module.exports = router
