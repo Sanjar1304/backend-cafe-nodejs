@@ -106,11 +106,31 @@ router.post('/forgotPassword', (req, res) => {
 // get API
 router.get('/get', (req, res) => {
     const user = req.body;
-    var query = "select id,name,email,contacNumber,status from user where role='user'";
-    connection.query(query, [user.email], (err, results) => {
-
+    var query = "select id,name,email,contactNumber,status from user where role='user'";
+    connection.query(query, (err, results) => {
+        if (!err) {
+            return res.status(200).json(results)
+        } else {
+            return res.status(500).json(err);
+        }
     })
 })
 
+
+// update API
+router.patch('/update', (req, res) => {
+    const user = req.body;
+    var query = "update user set status=? where id=?";
+    connection.query(query, [user.status, user.id], (err, results) => {
+        if (!err) {
+            if (results.affectedRows == 0) {
+                return res.status(404).json({ message: 'User id does not exist.' })
+            }
+            return res.status(200).json({ message: 'User updated successfully.' })
+        } else {
+            return res.status(500).json(err);
+        }
+    })
+})
 
 module.exports = router
