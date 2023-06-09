@@ -124,13 +124,24 @@ router.patch('/update', (req, res) => {
     connection.query(query, [user.status, user.id], (err, results) => {
         if (!err) {
             if (results.affectedRows == 0) {
-                return res.status(404).json({ message: 'User id does not exist.' })
+                return res.status(404).json({ message: 'User id does not exist.' });
             }
-            return res.status(200).json({ message: 'User updated successfully.' })
+            return res.status(200).json({ message: 'User updated successfully.' });
         } else {
             return res.status(500).json(err);
         }
     })
+})
+
+
+// checkToken API
+router.get('/checkToken', (req, res) => {
+    return res.status(200).json({ message: 'true' })
+})
+
+// changePassword API
+router.post('/changePassword', (req, res) => {
+
 })
 
 module.exports = router
