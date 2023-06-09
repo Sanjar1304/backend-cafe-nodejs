@@ -141,7 +141,11 @@ router.get('/checkToken', (req, res) => {
 
 // changePassword API
 router.post('/changePassword', (req, res) => {
+    const user = req.body;
+    const query = '';
+    connection.query(query, (err, results) => {
 
+    })
 })
 
 module.exports = router
