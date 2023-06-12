@@ -23,4 +23,21 @@ router.get('/get', auth.authenticateToken, (req, res, next) => {
     connection.query(query, (err, results) => {
         !err ? res.status(200).json(results) : res.status(500).json(err)
     })
+});
+
+
+// Update category API
+router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req, res, next) => {
+    let product = req.body;
+    var query = 'update category set name=? where id=?';
+    connection.query(query, [product.name, product.id], (err, results) => {
+        if (!err) {
+            if (results.affectedRows == 0) {
+                return res.status(404).json({ message: 'Category id does not exist.' })
+            }
+            return res.status(200).json({ message: 'Category updated successfully.' })
+        } else {
+            return res.status(500).json(err);
+        }
+    })
 })
