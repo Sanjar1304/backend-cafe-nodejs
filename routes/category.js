@@ -15,7 +15,20 @@ router.post('/add', auth.authenticateToken, checkRole.checkRole, (req, res, next
         if (!err) {
             return res.status(200).json({ message: 'New category added successfully.' })
         } else {
-            return res.status(500).json({ message: '' })
+            return res.status(500).json(err)
+        }
+    })
+});
+
+
+// Get all the category API
+router.get('/get', auth.authenticateToken, (req, res, next) => {
+    query = 'select * from category order by name';
+    connection.query(query, (err, results) => {
+        if (!err) {
+            return res.status(200).json(results);
+        } else {
+            return res.status(500).json(err)
         }
     })
 })
