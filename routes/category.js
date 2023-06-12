@@ -40,4 +40,6 @@ router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req, res, 
             return res.status(500).json(err);
         }
     })
-})
+});
+
+module.exports = router;
