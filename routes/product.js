@@ -33,4 +33,14 @@ router.get('/getByCategory/:id', auth.authenticateToken, (req, res, next) => {
     })
 });
 
+
+// 
+router.get('/getById/:id', auth.authenticateToken, (req, res, next) => {
+    const id = req.params.id;
+    var query = "select id,name,description,price from product where id=?";
+    connection.query(query, [id], (err, results) => {
+        !err ? res.status(200).json(results[0]) : res.status(500).json(err);
+    })
+});
+
 module.exports = router;
