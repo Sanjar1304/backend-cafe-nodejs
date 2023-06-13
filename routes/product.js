@@ -21,6 +21,16 @@ router.get('/get', auth.authenticateToken, (req, res, next) => {
     connection.query(query, (err, results) => {
         !err ? res.status(200).json(results) : res.status(500).json(err);
     })
-})
+});
+
+
+// Get By Category products API
+router.get('/getByCategory/:id', auth.authenticateToken, (req, res, next) => {
+    const id = req.params.id;
+    var query = "select id,name from product where categoryId=? and status='true'";
+    connection.query(query, [id], (err, results) => {
+        !err ? res.status(200).json(results) : res.status(500).json(err);
+    })
+});
 
 module.exports = router;
