@@ -67,7 +67,7 @@ router.delete('/delete/:id', auth.authenticateToken, checkRole.checkRole, (req, 
     var query = "delete from product where id=?";
     connection.query(query, [id], (err, results) => {
         if (!err) {
-            if (res.affectedRows == 0) {
+            if (results.affectedRows == 0) {
                 return res.status(404).json({ message: 'Product id does not exist.' })
             }
             return res.status(200).json({ message: 'Product deleted successfully.' })
