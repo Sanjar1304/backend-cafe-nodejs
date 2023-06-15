@@ -9,7 +9,7 @@ var uuid = require('uuid');
 var auth = require('../services/authentication');
 
 
-// generateReport API
+// generate report API
 router.post('/generateReport', auth.authenticateToken, (req, res) => {
     const generatedUUID = uuid.v1();
     const orderDetails = req.body;
@@ -55,5 +55,39 @@ router.post('/generateReport', auth.authenticateToken, (req, res) => {
 });
 
 
+
+// get pdf report API
+router.post('/getPdf', auth.authenticateToken, function(req, res) {
+    const orderDetails = req.body;
+    const pdfPath = './generated_pdf/' + orderDetails.uuid + '.pdf';
+    if (fetch.existsSync(pdfPath)) {
+        res.contentType("application/pdf");
+        fs.createReadStream(pdfPath).pipe(res);
+    } else {
+        var productDetailsReport = JSON.parse(orderDetails.productDetails);
+        ejs.renderFile(path.join(__dirname, '', "report.ejs"), {
+            productDetails: productDetailsReport,
+            name: orderDetails.name,
+            email: orderDetails.email,
+            contactNumber: orderDetails.contactNumber,
+            paymentMethod: orderDetails.paymentMethod,
+            totalAmount: orderDetails.totalAmount
+        }, (err, results) => {
+            if (err) {
+                return res.status(500).json(err)
+            } else {
+                pdf.create(results).toFile('./generated_pdf/' + orderDetails.uuid + '.pdf', function(err, data) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json(err);
+                    } else {
+                        res.contentType("application/pdf");
+                        fs.createReadStream(pdfPath).pipe(res);
+                    }
+                })
+            }
+        })
+    }
+});
 
 module.exports = router;
