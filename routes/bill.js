@@ -94,6 +94,9 @@ router.post('/getPdf', auth.authenticateToken, (req, res) => {
 // Get all the bills API
 router.get('/getBills', auth.authenticateToken, (req, res, next) => {
     var query = "select * from bill order by id DESC";
+    connection.query(query, (err, results) => {
+        !err ? res.status(200).json(results) : res.status(500).json(err);
+    })
 })
 
 
