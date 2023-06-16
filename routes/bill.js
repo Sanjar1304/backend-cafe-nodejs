@@ -90,4 +90,11 @@ router.post('/getPdf', auth.authenticateToken, (req, res) => {
     }
 });
 
+
+// Get all the bills API
+router.get('/getBills', auth.authenticateToken, (req, res, next) => {
+    var query = "select * from bill order by id DESC";
+})
+
+
 module.exports = router;
