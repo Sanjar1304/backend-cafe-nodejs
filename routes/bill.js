@@ -57,10 +57,10 @@ router.post('/generateReport', auth.authenticateToken, (req, res) => {
 
 
 // get pdf report API
-router.post('/getPdf', auth.authenticateToken, function(req, res) {
+router.post('/getPdf', auth.authenticateToken, (req, res) => {
     const orderDetails = req.body;
     const pdfPath = './generated_pdf/' + orderDetails.uuid + '.pdf';
-    if (fetch.existsSync(pdfPath)) {
+    if (fs.existsSync(pdfPath)) {
         res.contentType("application/pdf");
         fs.createReadStream(pdfPath).pipe(res);
     } else {
